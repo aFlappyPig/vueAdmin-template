@@ -1,35 +1,4 @@
-import { asyncRouterMap, constantRouterMap } from '@/router/index';
-
-/**
- * 通过meta.role判断是否与当前用户权限匹配
- * @param roles
- * @param route
- */
-function hasPermission(roles, route) {
-  if (route.meta && route.meta.role) {
-    return roles.some(role => route.meta.role.indexOf(role) >= 0)
-  } else {
-    return true
-  }
-}
-
-/**
- * 递归过滤异步路由表，返回符合用户角色权限的路由表
- * @param asyncRouterMap
- * @param roles
- */
-function filterAsyncRouter(asyncRouterMap, roles) {
-  const accessedRouters = asyncRouterMap.filter(route => {
-    if (hasPermission(roles, route)) {
-      if (route.children && route.children.length) {
-        route.children = filterAsyncRouter(route.children, roles)
-      }
-      return true
-    }
-    return false
-  })
-  return accessedRouters
-}
+import {asyncRouterMap, constantRouterMap} from '@/router/index';
 
 const permission = {
   state: {
@@ -43,15 +12,47 @@ const permission = {
     }
   },
   actions: {
-    GenerateRoutes({ commit }, data) {
+    GenerateRoutes ({commit}, data) {
       return new Promise(resolve => {
-        const { roles } = data
-        let accessedRouters
-        if (roles.indexOf('admin') >= 0) {
-          accessedRouters = asyncRouterMap
-        } else {
-          accessedRouters = filterAsyncRouter(asyncRouterMap, roles)
-        }
+        const {auth} = data
+
+        let accessedRouters = asyncRouterMap.filter(router => {
+          return auth.find(item => {
+            return item.resourceCnName === router.name
+          })
+        });
+
+        accessedRouters.forEach(router => {
+          if (router.children && router.children.length !== 0) {
+            router.children = router.children.filter(child => {
+              return auth.find(au => {
+                return au.resourceCnName === router.name;
+              }).nextData.find(b => {
+                return b.resourceCnName === child.name;
+              })
+            })
+          }
+        });
+
+        accessedRouters.forEach(router => {
+          if (router.children && router.children.length !== 0) {
+            let trd = router.children.find(child => {
+              return child.children && child.children.length !== 0;
+            })
+            if (trd) {
+              trd.children = trd.children.filter(child => {
+                return auth.find(au => {
+                  return au.resourceCnName === router.name;
+                }).nextData.find(b => {
+                  return b.resourceCnName === trd.name;
+                }).nextData.find(c => {
+                  return c.resourceCnName === child.name;
+                })
+              })
+            }
+          }
+        });
+
         commit('SET_ROUTERS', accessedRouters);
         resolve();
       })

@@ -1,17 +1,17 @@
-import { login, logout, getInfo } from '@/api/login';
-import { getToken, setToken, removeToken } from '@/utils/auth';
+import {login, logout, getInfo} from '@/api/login';
+import {setToken, getToken, removeToken} from "../../utils/auth";
 
 const user = {
   state: {
-    token: getToken(),
+    userId: '',
     name: '',
     avatar: '',
     roles: []
   },
 
   mutations: {
-    SET_TOKEN: (state, token) => {
-      state.token = token;
+    SET_USERID: (state, userId) => {
+      state.userId = userId;
     },
     SET_NAME: (state, name) => {
       state.name = name;
@@ -26,13 +26,13 @@ const user = {
 
   actions: {
     // 登录
-    Login({ commit }, userInfo) {
-      const email = userInfo.email.trim();
+    Login ({commit}, userInfo) {
+      const username = userInfo.username.trim();
       return new Promise((resolve, reject) => {
-        login(email, userInfo.password).then(response => {
+        login(username, userInfo.password).then(response => {
           const data = response.data;
-          setToken(data.token);
-          commit('SET_TOKEN', data.token);
+          setToken(data.userId);
+          commit('SET_USERID', data.userId);
           resolve();
         }).catch(error => {
           reject(error);
@@ -42,9 +42,10 @@ const user = {
 
 
     // 获取用户信息
-    GetInfo({ commit, state }) {
+    GetInfo ({commit, state}) {
       return new Promise((resolve, reject) => {
-        getInfo(state.token).then(response => {
+        if (getToken()) commit('SET_USERID', getToken());
+        getInfo(state.userId).then(response => {
           const data = response.data;
           commit('SET_ROLES', data.role);
           commit('SET_NAME', data.name);
@@ -57,10 +58,10 @@ const user = {
     },
 
     // 登出
-    LogOut({ commit, state }) {
+    LogOut ({commit, state}) {
       return new Promise((resolve, reject) => {
-        logout(state.token).then(() => {
-          commit('SET_TOKEN', '');
+        logout(state.userId).then(() => {
+          commit('SET_USERID', '');
           commit('SET_ROLES', []);
           removeToken();
           resolve();
@@ -71,9 +72,9 @@ const user = {
     },
 
     // 前端 登出
-    FedLogOut({ commit }) {
+    FedLogOut ({commit}) {
       return new Promise(resolve => {
-        commit('SET_TOKEN', '');
+        commit('SET_USERID', '');
         removeToken();
         resolve();
       });

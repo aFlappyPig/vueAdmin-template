@@ -11,7 +11,8 @@ import 'nprogress/nprogress.css'
 import 'normalize.css/normalize.css'
 import '@/assets/iconfont/iconfont'
 import IconSvg from '@/components/Icon-svg/index.vue'
-import { getToken } from '@/utils/auth'
+import {getToken} from '@/utils/auth'
+import axios from 'axios';
 
 Vue.config.productionTip = false
 
@@ -23,15 +24,22 @@ router.beforeEach((to, from, next) => {
   NProgress.start();
   if (getToken()) {
     if (to.path === '/login') {
-      next({ path: '/' });
+      next({path: '/'});
     } else {
-      if (store.getters.roles.length === 0) {
+      if (store.getters.addRouters.length === 0) {
         store.dispatch('GetInfo').then(res => {
-          const roles = res.data.role;
-          store.dispatch('GenerateRoutes', { roles }).then(() => {
-            router.addRoutes(store.getters.addRouters);
-            next({ ...to });
+          // const auth = res.data.auth;
+
+          axios.get('http://localhost:9002/fitsauth/api/v1/resourcesDetails').then(function (res) {
+            const auth = res.data;
+
+            store.dispatch('GenerateRoutes', {auth}).then(() => {
+              router.addRoutes(store.getters.addRouters);
+              next({...to});
+            })
+
           })
+
         })
       } else {
         next();
