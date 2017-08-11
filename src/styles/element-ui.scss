@@ -41,8 +41,17 @@
     font-weight: bold;
     color: #20a0ff;
   }
+  .el-date-table td.available.today:hover {
+    font-weight: normal;
+    color: #fff;
+  }
   .el-year-table td .cell,
   .el-month-table td .cell {
     color: #fff;
+  }
+  .el-date-table td.disabled {
+    background-color: transparent;
+    text-decoration: line-through;
+    color: #999;
   }
 }

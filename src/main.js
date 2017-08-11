@@ -10,9 +10,17 @@ import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import 'normalize.css/normalize.css'
 import '@/assets/iconfont/iconfont'
+import '@/utils/index'
 import IconSvg from '@/components/Icon-svg/index.vue'
 import {getToken} from '@/utils/auth'
-import axios from 'axios';
+
+import _ from 'lodash'
+import axios from 'axios'
+import moment from 'moment'
+
+Object.defineProperty(Vue.prototype, '$$_', {value: _})
+Object.defineProperty(Vue.prototype, '$$axios', {value: axios})
+Object.defineProperty(Vue.prototype, '$$moment', {value: moment})
 
 Vue.config.productionTip = false
 
@@ -27,20 +35,20 @@ router.beforeEach((to, from, next) => {
       next({path: '/'});
     } else {
       if (store.getters.addRouters.length === 0) {
-        store.dispatch('GetInfo').then(res => {
-          // const auth = res.data.auth;
+        // store.dispatch('GetInfo').then(res => {
+        // const auth = res.data.auth;
 
-          axios.get('http://localhost:9002/fitsauth/api/v1/resourcesDetails').then(function (res) {
-            const auth = res.data;
+        store.dispatch('GetResources').then(function (res) {
+          store.dispatch('GetCalendarDates');
 
-            store.dispatch('GenerateRoutes', {auth}).then(() => {
-              router.addRoutes(store.getters.addRouters);
-              next({...to});
-            })
-
+          const auth = res;
+          store.dispatch('GenerateRoutes', {auth}).then(() => {
+            router.addRoutes(store.getters.addRouters);
+            next({...to});
           })
-
         })
+
+        // })
       } else {
         next();
       }
@@ -64,5 +72,5 @@ new Vue({
   router,
   store,
   template: '<App/>',
-  components: { App }
+  components: {App}
 })

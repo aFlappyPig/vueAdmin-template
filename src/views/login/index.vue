@@ -49,8 +49,8 @@
       };
       return {
         loginForm: {
-          username: 'admin',
-          password: '123456'
+          username: 'PortfolioManager1',
+          password: 'admin123'
         },
         loginRules: {
           username: [

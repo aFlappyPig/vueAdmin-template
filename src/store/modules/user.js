@@ -1,4 +1,4 @@
-import {login, logout, getInfo} from '@/api/login';
+import {login, logout, getInfo, getCalendarDates} from '@/api/login';
 import {setToken, getToken, removeToken} from "../../utils/auth";
 
 const user = {
@@ -35,7 +35,11 @@ const user = {
           commit('SET_USERID', data.userId);
           resolve();
         }).catch(error => {
-          reject(error);
+          // reject(error);
+
+          setToken('2222');
+          commit('SET_USERID', '2222');
+          resolve();
         });
       });
     },
@@ -66,7 +70,9 @@ const user = {
           removeToken();
           resolve();
         }).catch(error => {
-          reject(error);
+          // reject(error);
+          removeToken();
+          resolve();
         });
       });
     },

@@ -1,14 +1,23 @@
-import {asyncRouterMap, constantRouterMap} from '@/router/index';
+import {asyncRouterMap, constantRouterMap} from '@/router/index'
+import {getResource, getCalendarDate} from '@/api/login'
 
 const permission = {
   state: {
     routers: constantRouterMap,
+    resources: undefined,
+    calendar: undefined,
     addRouters: []
   },
   mutations: {
     SET_ROUTERS: (state, routers) => {
       state.addRouters = routers;
       state.routers = constantRouterMap.concat(routers);
+    },
+    SET_RESOURCES: (state, resources) => {
+      state.resources = resources;
+    },
+    SET_CALENDARDATE: (state, calendar) => {
+      state.calendar = calendar;
     }
   },
   actions: {
@@ -55,6 +64,24 @@ const permission = {
 
         commit('SET_ROUTERS', accessedRouters);
         resolve();
+      })
+    },
+    GetResources ({commit}) {
+      return new Promise(resolve => {
+        getResource().then(res => {
+          const data = res.data;
+          commit('SET_RESOURCES', data);
+          resolve(data);
+        })
+      })
+    },
+    GetCalendarDates ({commit}) {
+      return new Promise(resolve => {
+        getCalendarDate().then(res => {
+          const data = res.data;
+          commit('SET_CALENDARDATE', data);
+          resolve();
+        })
       })
     }
   }
