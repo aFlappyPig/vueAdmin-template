@@ -474,7 +474,17 @@
       },
       //结算日期变动，与交易日期和清算速度有关
       fSettleDateChange () {
-        this.form.fSettleDate = this.$$moment(this.form.fTradeDate).add(+this.form.fSettleSpeed, 'days');
+        if (+this.form.fSettleSpeed === 1) {
+          let date = this.$$moment(this.form.fTradeDate);
+          do {
+            date = date.add(1, 'days');
+            console.log(date.format('YYYY/M/D'))
+            console.log(store.getters.calendar[date.format('YYYY/M/D')])
+          } while (store.getters.calendar[date.format('YYYY/M/D')] !== 'Y');
+          this.form.fSettleDate = date.format('YYYY-MM-DD');
+        } else {
+          this.form.fSettleDate = this.form.fTradeDate;
+        }
       },
       //应计利息变动，与所选债券和结算日期有关
       bAiChange () {
