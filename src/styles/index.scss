@@ -1,5 +1,6 @@
 @import './element-ui.scss';
 @import './mixin.scss';
+
 body {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
@@ -53,7 +54,7 @@ a:hover {
 }
 
 //main-container全局样式
-.app-main{
+.app-main {
   min-height: 100%
 }
 
@@ -69,3 +70,22 @@ a:hover {
   overflow: hidden;
 }
 
+hr {
+  border-color: rgba(131, 145, 165, .2);
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background-color: #e1e1e1;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: rgba(42, 63, 84, .6);
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}

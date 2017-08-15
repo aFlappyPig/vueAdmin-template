@@ -22,8 +22,8 @@ service.interceptors.request.use(config => {
 })
 
 // respone拦截器
-// service.interceptors.response.use(
-//   response => {
+service.interceptors.response.use(
+  response => {
 //   /**
 //   * code为非200是抛错 可结合自己业务进行修改
 //   */
@@ -51,16 +51,17 @@ service.interceptors.request.use(config => {
 //     } else {
 //       return response.data;
 //     }
-//   },
-//   error => {
-//     console.log('err' + error);// for debug
-//     Message({
-//       message: error.message,
-//       type: 'error',
-//       duration: 5 * 1000
-//     });
-//     return Promise.reject(error);
-//   }
-// )
+    return response;
+  },
+  error => {
+    console.log('err' + error);// for debug
+    Message({
+      message: error.message,
+      type: 'error',
+      duration: 5 * 1000
+    });
+    return Promise.reject(error);
+  }
+)
 
 export default service;

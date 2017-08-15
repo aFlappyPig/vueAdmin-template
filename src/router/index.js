@@ -18,8 +18,8 @@ const Err404 = _import('404');
 
 /* demo page */
 const Form = _import('page/form');
-const Table = _import('table/index');
 const InstructionBond = _import('page/instruction/bond');
+const InstructionQuery = _import('page/instruction/query');
 
 Vue.use(Router);
 
@@ -48,7 +48,7 @@ export const constantRouterMap = [
     name: '投资指令',
     icon: 'zujian',
     children: [
-      {path: 'query', component: Form, name: '投资指令查询', icon: 'zonghe'},
+      {path: 'query', component: InstructionQuery, name: '投资指令查询', icon: 'zonghe'},
       {path: 'bond', component: InstructionBond, name: '新建现券买卖指令', icon: 'zonghe'},
       {path: 'pledge', component: Form, name: '新建质押式回购指令', icon: 'zonghe'},
       {path: 'bought', component: Form, name: '新建买断式回购指令', icon: 'zonghe'},
@@ -71,7 +71,7 @@ export const asyncRouterMap = [
     icon: 'zujian',
     children: [
       {path: 'query', component: Form, name: '投资指令查询', icon: 'zonghe'},
-      {path: 'bond', component: Form, name: '新建现券买卖指令', icon: 'zonghe'},
+      {path: 'bond', component: InstructionBond, name: '新建现券买卖指令', icon: 'zonghe'},
       {path: 'pledge', component: Form, name: '新建质押式回购指令', icon: 'zonghe'},
       {path: 'bought', component: Form, name: '新建买断式回购指令', icon: 'zonghe'},
     ]

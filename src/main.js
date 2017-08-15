@@ -5,28 +5,37 @@ import App from './App'
 import router from './router'
 import store from './store'
 import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-default/index.css'
 import NProgress from 'nprogress'
+import 'element-ui/lib/theme-default/index.css'
 import 'nprogress/nprogress.css'
 import 'normalize.css/normalize.css'
 import '@/assets/iconfont/iconfont'
+
 import '@/utils/index'
-import IconSvg from '@/components/Icon-svg/index.vue'
+import '@/components/index'
+import '@/filters/index'
+import '@/directives/index'
+
 import {getToken} from '@/utils/auth'
 
 import _ from 'lodash'
 import axios from 'axios'
 import moment from 'moment'
+import accounting from 'accounting'
 
+//扩展Vue实例上的公共方法
 Object.defineProperty(Vue.prototype, '$$_', {value: _})
 Object.defineProperty(Vue.prototype, '$$axios', {value: axios})
 Object.defineProperty(Vue.prototype, '$$moment', {value: moment})
+Object.defineProperty(Vue.prototype, '$$accounting', {value: accounting})
 
+//生产环境关闭提示
 Vue.config.productionTip = false
 
+//使用插件
 Vue.use(ElementUI);
-Vue.component('icon-svg', IconSvg)
 
+//注册路由钩子
 const whiteList = ['/login'];
 router.beforeEach((to, from, next) => {
   NProgress.start();
@@ -67,6 +76,7 @@ router.afterEach(() => {
   NProgress.done();
 });
 
+//生成Vue实例
 new Vue({
   el: '#app',
   router,

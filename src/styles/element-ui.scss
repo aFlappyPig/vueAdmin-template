@@ -39,7 +39,8 @@
   }
   .el-date-table td.available:hover {
     font-weight: bold;
-    color: #20a0ff;
+    color: #fff;
+    background-color: #26B99A;
   }
   .el-date-table td.available.today:hover {
     font-weight: normal;
@@ -53,5 +54,64 @@
     background-color: transparent;
     text-decoration: line-through;
     color: #999;
+  }
+}
+
+.el-date-range-picker {
+  .el-picker-panel__body {
+    background: #324157;
+    td.disabled {
+      background-color: transparent;
+      text-decoration: line-through;
+      color: #999;
+    }
+    td.available {
+      color: #fff;
+    }
+    td.available:hover {
+      font-weight: bold;
+      color: #fff;
+      background: #26B99A;
+    }
+    .el-year-table td .cell,
+    .el-month-table td .cell {
+      color: #fff;
+    }
+    .el-date-range-picker__header {
+      color: #fff;
+    }
+  }
+  .el-picker-panel__sidebar {
+    background: #26B99A;
+    border-right: none;
+    .el-picker-panel__shortcut {
+      color: #fff;
+    }
+    .el-picker-panel__shortcut:hover {
+      background: #324157;
+    }
+  }
+}
+
+.el-form {
+  .el-form-item {
+    margin-top: 10px;
+  }
+}
+
+.el-table {
+  td, th {
+    text-align: center;
+    height: 36px;
+  }
+  .cell, .el-table th > div {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+  th > .cell {
+    white-space: nowrap;
+  }
+  .el-table__empty-block {
+    min-height: 36px;
   }
 }

@@ -39,9 +39,9 @@
     overflow: hidden;
     &.hideSidebar {
       .sidebar-wrapper {
-        transform: translate(-140px, 0);
+        transform: translate(-155px, 0);
         .sidebar-container {
-          transform: translate(132px, 0);
+          transform: translate(152px, 0);
         }
         &:hover {
           transform: translate(0, 0);
